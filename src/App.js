@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -8,6 +8,10 @@ function App() {
   const [filter, setFilter] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [Title, setTitle] = useState('');
+  useEffect(() => {
+    window.document.title = Title;
+  }, [Title]);
 
   const handleSubmit = async () => {
     setError('');
@@ -15,9 +19,9 @@ function App() {
     try {
       const parsedJson = JSON.parse(jsonInput);
       console.log('Parsed JSON:', parsedJson);
-      
       const res = await axios.post('http://localhost:3000/bfhl', parsedJson);
       setResponse(res.data);
+      setTitle(res.data.roll_number);
       setLoading(false);
     } catch (err) {
       setLoading(false);
